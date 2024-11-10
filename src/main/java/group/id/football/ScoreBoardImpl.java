@@ -18,6 +18,13 @@ public class ScoreBoardImpl implements Scoreboard {
         matches.add(new Match());
     }
 
+    @Override
+    public void updateMatchScore(int homeTeamScore, int awayTeamScore) {
+
+    }
+
+
+
     List<Match> getMatches() {
         return matches;
     }
