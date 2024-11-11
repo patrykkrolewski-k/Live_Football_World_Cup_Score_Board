@@ -83,6 +83,7 @@ public class ScoreBoardImplTest {
     @Test
     void finishMatchInProgressShouldRemoveItFromScoreBoard() {
         scoreboard.startNewMatch("Mexico", "Canada");
+        scoreboard.finishMatch("Mexico", "Canada");
         assertThat(scoreboard.getMatchMap().values()).isEmpty();
     }
 

@@ -35,7 +35,7 @@ public class ScoreBoardImpl implements Scoreboard {
 
     @Override
     public void finishMatch(String homeTeamName, String awayTeamName) {
-
+        matchMap.remove(homeTeamName + awayTeamName);
     }
 
     public Map<String, Match> getMatchMap() {
