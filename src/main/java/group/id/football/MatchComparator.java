@@ -13,9 +13,4 @@ class MatchComparator implements Comparator<Match> {
     }
         return pointsDifference;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
 }

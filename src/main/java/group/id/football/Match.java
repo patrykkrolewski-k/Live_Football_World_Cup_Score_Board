@@ -1,8 +1,11 @@
 package group.id.football;
 
-import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class Match {
+    private static final String NEGATIVE_SCORE = "The home team score and the away team score cannot be negative";
+    static final Logger LOGGER = LoggerFactory.getLogger(Match.class);
 
     private final FootballTeam homeTeam;
     private final FootballTeam awayTeam;
@@ -17,26 +20,17 @@ class Match {
     }
 
     void updateScore(int homeTeamPoints, int awayTeamPoints) {
-        this.homeTeamPoints = homeTeamPoints;
-        this.awayTeamPoints = awayTeamPoints;
+        if(homeTeamPoints < 0 || awayTeamPoints < 0){
+            LOGGER.warn(NEGATIVE_SCORE);
+        } else {
+            this.homeTeamPoints = homeTeamPoints;
+            this.awayTeamPoints = awayTeamPoints;
+        }
     }
 
     @Override
     public String toString() {
         return homeTeam.getName() + " " + homeTeamPoints + " - " + awayTeam.getName() + " " + awayTeamPoints;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Match match = (Match) o;
-        return homeTeam.equals(match.homeTeam) && awayTeam.equals(match.awayTeam);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(homeTeam, awayTeam);
     }
 
     int getHomeTeamPoints() {
