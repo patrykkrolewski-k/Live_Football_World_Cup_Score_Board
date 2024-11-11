@@ -8,15 +8,22 @@ class Match {
     private final FootballTeam awayTeam;
     private int homeTeamPoints;
     private int awayTeamPoints;
+    private final int matchIndex;
 
-    public Match(FootballTeam homeTeam, FootballTeam awayTeam) {
+    Match(FootballTeam homeTeam, FootballTeam awayTeam, int matchIndex) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.matchIndex = matchIndex;
     }
 
     void updateScore(int homeTeamPoints, int awayTeamPoints) {
         this.homeTeamPoints = homeTeamPoints;
         this.awayTeamPoints = awayTeamPoints;
+    }
+
+    @Override
+    public String toString() {
+        return homeTeam.getName() + " " + homeTeamPoints + " - " + awayTeam.getName() + " " + awayTeamPoints;
     }
 
     @Override
@@ -32,12 +39,15 @@ class Match {
         return Objects.hash(homeTeam, awayTeam);
     }
 
-    public int getHomeTeamPoints() {
+    int getHomeTeamPoints() {
         return homeTeamPoints;
     }
 
-    public int getAwayTeamPoints() {
+    int getAwayTeamPoints() {
         return awayTeamPoints;
     }
 
+    public int getMatchIndex() {
+        return matchIndex;
+    }
 }

@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScoreBoardImplTest {
 
-    private static final String EXPECTED_SUMMARY = "1. Uruguay 6 - Italy 6\n" +
-            "2. Spain 10 - Brazil 2\n" +
-            "3. Mexico 0 - Canada 5\n" +
-            "4. Argentina 3 - Australia 1\n" +
-            "5. Germany 2 - France 2";
+    private static final String EXPECTED_SUMMARY = "Uruguay 6 - Italy 6\n" +
+            "Spain 10 - Brazil 2\n" +
+            "Mexico 0 - Canada 5\n" +
+            "Argentina 3 - Australia 1\n" +
+            "Germany 2 - France 2";
 
     private ScoreBoardImpl scoreboard;
 
@@ -103,8 +103,8 @@ public class ScoreBoardImplTest {
         scoreboard.updateMatchScore("Spain", 10, "Brazil", 2);
         scoreboard.startNewMatch("Germany", "France");
         scoreboard.updateMatchScore("Germany", 2, "France", 2);
-        scoreboard.startNewMatch("Uruguay", "Uruguay");
-        scoreboard.updateMatchScore("Uruguay", 6, "Uruguay", 6);
+        scoreboard.startNewMatch("Uruguay", "Italy");
+        scoreboard.updateMatchScore("Uruguay", 6, "Italy", 6);
         scoreboard.startNewMatch("Argentina", "Australia");
         scoreboard.updateMatchScore("Argentina", 3, "Australia", 1);
 
