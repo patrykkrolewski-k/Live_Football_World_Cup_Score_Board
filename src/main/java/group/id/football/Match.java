@@ -2,7 +2,7 @@ package group.id.football;
 
 import java.util.Objects;
 
-public class Match {
+class Match {
 
     private final FootballTeam homeTeam;
     private final FootballTeam awayTeam;

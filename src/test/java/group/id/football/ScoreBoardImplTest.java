@@ -27,7 +27,7 @@ public class ScoreBoardImplTest {
         logger.addAppender(listAppender);
         ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch(null, "Canada");
-        assertThat(listAppender.list.get(0)).isEqualTo("Home team name cannot be null");
+        assertThat(listAppender.list.get(0).getMessage()).contains("Home team name cannot be null");
     }
 
     @Test
@@ -38,20 +38,23 @@ public class ScoreBoardImplTest {
         logger.addAppender(listAppender);
         ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch("Mexico", null);
-        assertThat(listAppender.list.get(0)).isEqualTo("Away team name cannot be null");
+        assertThat(listAppender.list.get(0).getMessage()).contains("Away team name cannot be null");
     }
 
     @Test
-    void startTheSameMatchParallelly() {
+    void startTheSameMatchParallellyIsForbidenAndShouldNotOverwriteScore() {
         Logger logger = (Logger) LoggerFactory.getLogger(ScoreBoardImpl.class);
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
         ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch("Mexico", "Canada");
+        scoreboard.updateMatchScore("Mexico",4, "Canada", 2);
         scoreboard.startNewMatch("Mexico", "Canada");
         assertThat(listAppender.list.get(0).getMessage()).contains("Mexico - Canada match has already started");
-
+        Match match = scoreboard.getMatchMap().values().iterator().next();
+        assertThat(match.getHomeTeamPoints()).isEqualTo(4);
+        assertThat(match.getAwayTeamPoints()).isEqualTo(2);
     }
     @Test
     void updateScoreOfMatches() {
@@ -72,12 +75,7 @@ public class ScoreBoardImplTest {
         logger.addAppender(listAppender);
         ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.updateMatchScore("Mexico",1, "Belgium", 3);
-        assertThat(listAppender.list.get(0)).isEqualTo("There is no Mexico - Belgium match now");
-
+        assertThat(listAppender.list.get(0).getMessage()).contains("There is no Mexico - Belgium match now");
     }
-
-
-
-
 
 }
