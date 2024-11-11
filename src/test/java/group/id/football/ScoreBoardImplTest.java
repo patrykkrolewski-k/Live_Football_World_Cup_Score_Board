@@ -12,12 +12,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScoreBoardImplTest {
 
+    private static final String EXPECTED_SUMMARY = "1. Uruguay 6 - Italy 6\n" +
+            "2. Spain 10 - Brazil 2\n" +
+            "3. Mexico 0 - Canada 5\n" +
+            "4. Argentina 3 - Australia 1\n" +
+            "5. Germany 2 - France 2";
+
     private ScoreBoardImpl scoreboard;
 
     @BeforeEach
     void init() {
         this.scoreboard = new ScoreBoardImpl();
     }
+
     @Test
     void matchIsInitialisedWithZeroScore() {
         scoreboard.startNewMatch("Mexico", "Canada");
@@ -53,17 +60,18 @@ public class ScoreBoardImplTest {
         listAppender.start();
         logger.addAppender(listAppender);
         scoreboard.startNewMatch("Mexico", "Canada");
-        scoreboard.updateMatchScore("Mexico",4, "Canada", 2);
+        scoreboard.updateMatchScore("Mexico", 4, "Canada", 2);
         scoreboard.startNewMatch("Mexico", "Canada");
         assertThat(listAppender.list.get(0).getMessage()).contains("Mexico - Canada match has already started");
         Match match = scoreboard.getMatchMap().values().iterator().next();
         assertThat(match.getHomeTeamPoints()).isEqualTo(4);
         assertThat(match.getAwayTeamPoints()).isEqualTo(2);
     }
+
     @Test
     void updateScoreOfMatches() {
         scoreboard.startNewMatch("Mexico", "Canada");
-        scoreboard.updateMatchScore("Mexico",1, "Canada", 3);
+        scoreboard.updateMatchScore("Mexico", 1, "Canada", 3);
         Match match = scoreboard.getMatchMap().values().iterator().next();
         assertThat(match.getHomeTeamPoints()).isEqualTo(1);
         assertThat(match.getAwayTeamPoints()).isEqualTo(3);
@@ -76,7 +84,7 @@ public class ScoreBoardImplTest {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
-        scoreboard.updateMatchScore("Mexico",1, "Belgium", 3);
+        scoreboard.updateMatchScore("Mexico", 1, "Belgium", 3);
         assertThat(listAppender.list.get(0).getMessage()).contains("There is no Mexico - Belgium match now");
     }
 
@@ -85,6 +93,22 @@ public class ScoreBoardImplTest {
         scoreboard.startNewMatch("Mexico", "Canada");
         scoreboard.finishMatch("Mexico", "Canada");
         assertThat(scoreboard.getMatchMap().values()).isEmpty();
+    }
+
+    @Test
+    void scoresShouldBePrintedFromTopTotalScoreAndThenFromOldestMatch() {
+        scoreboard.startNewMatch("Mexico", "Canada");
+        scoreboard.updateMatchScore("Mexico", 0, "Canada", 5);
+        scoreboard.startNewMatch("Spain", "Brazil");
+        scoreboard.updateMatchScore("Spain", 10, "Brazil", 2);
+        scoreboard.startNewMatch("Germany", "France");
+        scoreboard.updateMatchScore("Germany", 2, "France", 2);
+        scoreboard.startNewMatch("Uruguay", "Uruguay");
+        scoreboard.updateMatchScore("Uruguay", 6, "Uruguay", 6);
+        scoreboard.startNewMatch("Argentina", "Australia");
+        scoreboard.updateMatchScore("Argentina", 3, "Australia", 1);
+
+        assertThat(scoreboard.toString()).isEqualTo(EXPECTED_SUMMARY);
     }
 
 }

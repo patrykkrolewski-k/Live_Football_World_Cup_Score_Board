@@ -2,7 +2,7 @@ package group.id.football;
 
 import java.util.Objects;
 
-public class FootballTeam {
+class FootballTeam {
 
     private final String name;
 

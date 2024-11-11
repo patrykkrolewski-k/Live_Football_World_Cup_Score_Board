@@ -38,6 +38,11 @@ public class ScoreBoardImpl implements Scoreboard {
         matchMap.remove(homeTeamName + awayTeamName);
     }
 
+    @Override
+    public String toString() {
+        return null;
+    }
+
     public Map<String, Match> getMatchMap() {
         return matchMap;
     }
