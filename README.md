@@ -6,6 +6,9 @@ Implementation Tools
 - Java 18
 - junit-jupiter
 - assertj-core
+- logback-core
+- logback-classic
+- slf4j-api
 
 # functionalities
 

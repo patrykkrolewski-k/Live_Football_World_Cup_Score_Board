@@ -2,31 +2,32 @@ package group.id.football;
 
 import group.id.api.Scoreboard;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ScoreBoardImpl implements Scoreboard {
 
-
-    private final List<Match> matches;
+    private final Map<String, Match> matchMap;
 
     public ScoreBoardImpl() {
-        this.matches = new ArrayList<>();
+        this.matchMap = new HashMap();
     }
 
-    public void startNewMatch(FootballTeam homeTeam, FootballTeam awayTeam) {
-        matches.add(new Match());
+    public void startNewMatch(String homeTeamName, String awayTeamName) {
+        matchMap.put(
+                homeTeamName + awayTeamName,
+                new Match(
+                        new FootballTeam(homeTeamName),
+                        new FootballTeam(awayTeamName)));
     }
 
     @Override
-    public void updateMatchScore(int homeTeamScore, int awayTeamScore) {
-
+    public void updateMatchScore(String homeTeamName, int homeTeamScore, String awayTeamName, int awayTeamScore) {
+        if (matchMap.containsKey(homeTeamName + awayTeamName)) {
+            matchMap.get(homeTeamName + awayTeamName).updateScore(homeTeamScore, awayTeamScore);
+        }
     }
 
-
-
-    List<Match> getMatches() {
-        return matches;
+    public Map<String, Match> getMatchMap() {
+        return matchMap;
     }
-
 }
