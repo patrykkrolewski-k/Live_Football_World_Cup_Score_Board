@@ -4,15 +4,22 @@ package group.id.football;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScoreBoardImplTest {
+
+    private ScoreBoardImpl scoreboard;
+
+    @BeforeEach
+    void init() {
+        this.scoreboard = new ScoreBoardImpl();
+    }
     @Test
     void matchIsInitialisedWithZeroScore() {
-        ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch("Mexico", "Canada");
         Match match = scoreboard.getMatchMap().values().iterator().next();
         assertThat(match.getHomeTeamPoints()).isZero();
@@ -25,18 +32,16 @@ public class ScoreBoardImplTest {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
-        ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch(null, "Canada");
         assertThat(listAppender.list.get(0).getMessage()).contains("Home team name cannot be null");
     }
 
     @Test
-    void nawayTeamNameCannotBeNull() {
+    void awayTeamNameCannotBeNull() {
         Logger logger = (Logger) LoggerFactory.getLogger(ScoreBoardImpl.class);
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
-        ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch("Mexico", null);
         assertThat(listAppender.list.get(0).getMessage()).contains("Away team name cannot be null");
     }
@@ -47,7 +52,6 @@ public class ScoreBoardImplTest {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
-        ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch("Mexico", "Canada");
         scoreboard.updateMatchScore("Mexico",4, "Canada", 2);
         scoreboard.startNewMatch("Mexico", "Canada");
@@ -58,7 +62,6 @@ public class ScoreBoardImplTest {
     }
     @Test
     void updateScoreOfMatches() {
-        ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.startNewMatch("Mexico", "Canada");
         scoreboard.updateMatchScore("Mexico",1, "Canada", 3);
         Match match = scoreboard.getMatchMap().values().iterator().next();
@@ -73,9 +76,14 @@ public class ScoreBoardImplTest {
         ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
         listAppender.start();
         logger.addAppender(listAppender);
-        ScoreBoardImpl scoreboard = new ScoreBoardImpl();
         scoreboard.updateMatchScore("Mexico",1, "Belgium", 3);
         assertThat(listAppender.list.get(0).getMessage()).contains("There is no Mexico - Belgium match now");
+    }
+
+    @Test
+    void finishMatchInProgressShouldRemoveItFromScoreBoard() {
+        scoreboard.startNewMatch("Mexico", "Canada");
+        assertThat(scoreboard.getMatchMap().values()).isEmpty();
     }
 
 }

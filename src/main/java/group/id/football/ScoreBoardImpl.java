@@ -33,6 +33,11 @@ public class ScoreBoardImpl implements Scoreboard {
         }
     }
 
+    @Override
+    public void finishMatch(String homeTeamName, String awayTeamName) {
+
+    }
+
     public Map<String, Match> getMatchMap() {
         return matchMap;
     }
